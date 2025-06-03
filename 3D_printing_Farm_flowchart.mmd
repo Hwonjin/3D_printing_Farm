@@ -1,0 +1,64 @@
+flowchart TB
+A[recept_customer]
+B[create_blueprint]
+C{printer_type}
+D_1[FDM1]
+D_2[FDM2]
+D_3[SLA1]
+D_4[SLA2]
+F[inspect_product]
+G[packaging_product]
+
+subgraph Process0
+    direction TB
+    A[recept_customer];
+    B[create_blueprint];
+    end
+
+subgraph Process1
+    direction TB
+    C{printer_type}
+    D_1[FDM1]
+    D_2[FDM2]
+    D_3[SLA1]
+    D_4[SLA2]
+    end
+
+subgraph process2
+    direction TB
+    F[inspect_product];
+    end
+
+subgraph process3
+    direction TB
+    G[packaging_product];
+    end
+
+
+subgraph MaterialStock
+    direction LR
+    E_1[(Plastic)]:::Green;
+    E_2[(Resin)]:::Green;
+    end
+
+
+A-->|cs have blueprint| C;
+A-->|cs don't have blueprint| B;
+B--> C;
+C-->|if printer_type==0| D_1;
+C-->|if printer_type==0| D_2;
+C-->|if printer_type==1| D_3;
+C-->|if printer_type==1| D_4;
+E_1-.-> D_1;
+E_1-.-> D_2;
+E_2-.-> D_3;
+E_2-.-> D_4;
+D_1--> F;
+D_2--> F;
+D_3--> F;
+D_4--> F;
+F -.->|fail| C;
+F-->|pass| G;
+linkStyle 15 stroke:red, stroke-width:2px;
+linkStyle 16 stroke:blue, stroke-width:2px;
+classDef Green stroke:green, stroke-width:2px;
